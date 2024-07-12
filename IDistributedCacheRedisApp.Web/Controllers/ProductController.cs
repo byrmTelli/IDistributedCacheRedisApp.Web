@@ -43,5 +43,21 @@ namespace IDistributedCacheRedisApp.Web.Controllers
             _distributedCache.Remove("product:1");
             return View();
         }
+
+        public IActionResult ImageCache()
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/images/dashboard.png");
+            byte[] imageByte = System.IO.File.ReadAllBytes(path);
+
+            _distributedCache.Set("image", imageByte);
+
+            return View();
+        }
+        
+        public IActionResult ImageShow()
+        {
+            byte[] resimByte = _distributedCache.Get("image");
+            return File(resimByte,"image/png");
+        }
     }
 }
